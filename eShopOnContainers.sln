@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36616.10 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{4B1D7856-7D12-4341-9182-0C12952CB781}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{1F3F7AE7-6D7E-4584-A8CF-A3DBE81764D1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{2FDE4633-00DC-426C-914C-55C8DB31502F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.API", "Catalog.API\Catalog.API.csproj", "{B721C4F8-BE8F-4B85-B45F-11B9ED16481E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B721C4F8-BE8F-4B85-B45F-11B9ED16481E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B721C4F8-BE8F-4B85-B45F-11B9ED16481E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B721C4F8-BE8F-4B85-B45F-11B9ED16481E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B721C4F8-BE8F-4B85-B45F-11B9ED16481E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1F3F7AE7-6D7E-4584-A8CF-A3DBE81764D1} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{2FDE4633-00DC-426C-914C-55C8DB31502F} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B721C4F8-BE8F-4B85-B45F-11B9ED16481E} = {2FDE4633-00DC-426C-914C-55C8DB31502F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F77EDB8C-E356-4820-8B88-0117ED2E6766}
+	EndGlobalSection
+EndGlobal
