@@ -1,4 +1,6 @@
 using Catalog.API.Data;
+using Catalog.API.Integration;
+using Catalog.API.Integration.ItemEvents;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<CatalogContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.Configure<RabbitOptions>(builder.Configuration.GetSection("RabbitMq"));
+builder.Services.Configure<RabbitMqExchange>(builder.Configuration.GetSection("RabbitMqExchange"));
+builder.Services.AddSingleton<IEventsPublisher, EventsPublisher>();
 
 var app = builder.Build();
 
@@ -27,5 +33,26 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+try
+{
+
+    //registering the publisher
+    app.Lifetime.ApplicationStarted.Register(() => {
+        var eventsPublisher = app.Services.GetService<IEventsPublisher>();
+        eventsPublisher.Start();
+    });
+    app.Lifetime.ApplicationStopping.Register(() => {
+        var eventsPublisher = app.Services.GetService<IEventsPublisher>();
+        eventsPublisher.Stop();
+    });
+
+}
+catch (Exception ex)
+{
+    var logger = app.Services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "An error while connecting to RabbitMq.");
+
+}
 
 app.Run();

@@ -1,4 +1,5 @@
 ﻿using Catalog.API.Data;
+using Catalog.API.Integration.ItemEvents;
 using Catalog.API.Model;
 using Catalog.API.Model.CatalogItemDTO;
 using Microsoft.AspNetCore.Http;
@@ -17,10 +18,12 @@ namespace Catalog.API.Controllers
     public class CatalogItemsController : ControllerBase
     {
         private readonly CatalogContext _context;
+        private readonly IEventsPublisher _eventsPublisher;
 
-        public CatalogItemsController(CatalogContext context)
+        public CatalogItemsController(CatalogContext context, IEventsPublisher eventsPublisher)
         {
             _context = context;
+            _eventsPublisher = eventsPublisher;
         }
 
         // GET: api/CatalogItems
@@ -106,7 +109,28 @@ namespace Catalog.API.Controllers
 
             if (item == null) return NotFound($"Item {itemDTO.Name} does not exist in the catalog");
 
-            if (item.Price != itemDTO.Price) priceChanged = true;
+            //if (item.Price != itemDTO.Price) priceChanged = true;
+            try
+            {
+                await _context.SaveChangesAsync();
+                if (priceChanged)
+                {
+                    var itemPriceChangedEvent = new ItemPriceChangedEvent
+                    {
+                        Name = item.Name,
+                        Price = item.Price
+                    };
+                    await _eventsPublisher.Publish(itemPriceChangedEvent);
+
+                }
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+            //return Ok(itemDTO);
+
             if (item.CatalogType.Type != itemDTO.CatalogType)
             {
                 var type = _context.CatalogTypes.FirstOrDefault(t => t.Type == itemDTO.CatalogType);
